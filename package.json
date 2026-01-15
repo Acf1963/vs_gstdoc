@@ -1,6 +1,7 @@
 {
   "name": "gestdoc",
   "version": "1.0.0",
+  "license": "MIT",
   "author": "António Fernandes <antoniocarlos.fernandes@hotmail.com>",
   "scripts": {
     "dev": "vite",
