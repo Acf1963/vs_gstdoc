@@ -60,7 +60,7 @@ const App: React.FC = () => {
     }
   };
 
-  const addRequest = (newReq: Omit<RequestRecord, 'id' | 'dataAtual' | 'dias'>) => {
+  const addRequest = (newReq: Omit<RequestRecord, 'id' | 'dataAtual' | 'dias' | 'estado'>) => {
     const now = new Date();
     const start = new Date(newReq.dataInicio);
     const diffTime = Math.abs(now.getTime() - start.getTime());
@@ -74,17 +74,17 @@ const App: React.FC = () => {
       estado: newReq.localizacaoOrigem === newReq.localizacaoAtual ? RequestStatus.FINISHED : RequestStatus.IN_PROGRESS
     };
     
-    setRequests(prev => [record, ...prev]);
+    setRequests((prev: RequestRecord[]) => [record, ...prev]);
   };
 
   const deleteRequest = (id: string) => {
     if (window.confirm("Tem certeza que deseja excluir este registro?")) {
-      setRequests(prev => prev.filter(r => r.id !== id));
+      setRequests((prev: RequestRecord[]) => prev.filter(r => r.id !== id));
     }
   };
 
   const updateRequestStatus = (id: string, status: RequestStatus) => {
-    setRequests(prev => prev.map(r => r.id === id ? { ...r, estado: status } : r));
+    setRequests((prev: RequestRecord[]) => prev.map(r => r.id === id ? { ...r, estado: status } : r));
   };
 
   if (!currentUser) {
@@ -291,7 +291,7 @@ const App: React.FC = () => {
 };
 
 // Internal Helper Components
-const RequestForm: React.FC<{ onSubmit: (req: any) => void; entities: Entity[] }> = ({ onSubmit, entities }) => {
+const RequestForm: React.FC<{ onSubmit: (req: Omit<RequestRecord, 'id' | 'dataAtual' | 'dias' | 'estado'>) => void; entities: Entity[] }> = ({ onSubmit, entities }) => {
   const [formData, setFormData] = useState({
     caixa: '',
     cliente: '',

@@ -7,7 +7,7 @@ interface EntityModalProps {
   setEntities: React.Dispatch<React.SetStateAction<Entity[]>>;
 }
 
-const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntities }) => {
+const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntities }: EntityModalProps) => {
   const [activeType, setActiveType] = useState<EntityType | 'sistema'>('caixas');
   const [newName, setNewName] = useState('');
   const [newPass, setNewPass] = useState('');
@@ -16,7 +16,7 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
   
   const excelInputRef = useRef<HTMLInputElement>(null);
 
-  const currentEntities = entities.filter(e => e.type === activeType);
+  const currentEntities = entities.filter((e: Entity) => e.type === activeType);
 
   useEffect(() => {
     setSelectedIds([]);
@@ -25,7 +25,7 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
   }, [activeType]);
 
   const toggleSelect = (id: string) => {
-    setSelectedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+    setSelectedIds((prev: string[]) => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
 
   const handleAdd = () => {
@@ -37,14 +37,14 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
       parentId: activeType === 'solicitantes' ? selectedParentId : undefined,
       pass: activeType === 'usuarios' ? newPass : undefined
     };
-    setEntities(prev => [...prev, newEntry]);
+    setEntities((prev: Entity[]) => [...prev, newEntry]);
     setNewName('');
     setNewPass('');
   };
 
   const handleResetDB = () => {
     if (window.confirm("ATENÇÃO: Deseja apagar permanentemente TODA a base de dados? Esta ação não pode ser desfeita.")) {
-      const admin = entities.find(e => e.name === 'admin' && e.type === 'usuarios');
+      const admin = entities.find((e: Entity) => e.name === 'admin' && e.type === 'usuarios');
       setEntities(admin ? [admin] : []);
       localStorage.removeItem('gestdoc_requests');
       onClose();
@@ -91,7 +91,7 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
           {tabs.map(tab => (
             <button
               key={tab.value}
-              onClick={() => setActiveType(tab.value as any)}
+              onClick={() => setActiveType(tab.value as EntityType | 'sistema')}
               className={`flex-1 min-w-[120px] py-4 text-[10px] font-black uppercase transition-all relative ${
                 activeType === tab.value ? 'bg-white text-navy' : 'text-slate-400 hover:text-navy'
               } ${tab.color || ''}`}
@@ -127,20 +127,20 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
                 {activeType === 'solicitantes' && (
                   <select 
                     value={selectedParentId}
-                    onChange={e => setSelectedParentId(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedParentId(e.target.value)}
                     className="w-full p-4 mb-4 rounded-2xl font-bold border-2"
                     title="Selecionar setor vinculado"
                     aria-label="Vincular Setor"
                   >
                     <option value="">-- Vincular Setor --</option>
-                    {entities.filter(e => e.type === 'sectores').map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                    {entities.filter((e: Entity) => e.type === 'sectores').map((s: Entity) => <option key={s.id} value={s.id}>{s.name}</option>)}
                   </select>
                 )}
                 <div className="flex gap-3">
                   <input 
                     type="text" 
                     value={newName}
-                    onChange={e => setNewName(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)}
                     placeholder="Nome do registro..."
                     className="flex-grow p-4 rounded-2xl font-bold text-lg border-2 outline-none focus:border-moss"
                   />
@@ -150,7 +150,7 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
                   <input 
                     type="password" 
                     value={newPass}
-                    onChange={e => setNewPass(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPass(e.target.value)}
                     placeholder="Definir Palavra-passe..."
                     className="w-full p-4 mt-3 rounded-2xl font-bold text-lg border-2"
                   />
@@ -158,10 +158,10 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
               </div>
 
               <div className="space-y-3">
-                {currentEntities.map(entity => (
+                {currentEntities.map((entity: Entity) => (
                   <div key={entity.id} className="flex items-center justify-between p-4 border-2 rounded-2xl bg-white shadow-sm">
                     <span className="font-bold text-navy uppercase text-sm">{entity.name}</span>
-                    <button onClick={() => setEntities(prev => prev.filter(e => e.id !== entity.id))} className="text-slate-300 hover:text-red-500 p-2" title="Excluir registro" aria-label="Excluir registro"><i className="fas fa-trash-alt"></i></button>
+                    <button onClick={() => setEntities((prev: Entity[]) => prev.filter(e => e.id !== entity.id))} className="text-slate-300 hover:text-red-500 p-2" title="Excluir registro" aria-label="Excluir registro"><i className="fas fa-trash-alt"></i></button>
                   </div>
                 ))}
               </div>
