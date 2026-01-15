@@ -15,12 +15,16 @@ const colorToStatClass: Record<string, string> = {
   'bg-blue-500': 'stat-card-blue',
   'bg-purple-600': 'stat-card-purple',
   'bg-cyan-600': 'stat-card-cyan',
+  'bg-red-600': 'stat-card-red',
 };
 
 const Dashboard: React.FC<DashboardProps> = ({ requests }) => {
-  const avgDays = requests.length > 0 
-    ? (requests.reduce((acc, curr) => acc + curr.dias, 0) / requests.length).toFixed(1) 
-    : '0';
+  const totalDays = requests.reduce((acc, curr) => acc + curr.dias, 0);
+  const avgDaysNum = requests.length > 0 ? totalDays / requests.length : 0;
+  const avgDays = avgDaysNum.toFixed(1);
+
+  const alertedRequests = requests.filter(r => r.dias > avgDaysNum);
+  const alertCount = alertedRequests.length;
 
   const stats = [
     { 
@@ -43,6 +47,13 @@ const Dashboard: React.FC<DashboardProps> = ({ requests }) => {
       icon: 'fa-hourglass-half', 
       color: 'bg-amber-600', 
       detail: 'Média de dias' 
+    },
+    { 
+      label: 'Alertas Críticos', 
+      value: alertCount, 
+      icon: 'fa-triangle-exclamation', 
+      color: 'bg-red-600', 
+      detail: `Acima de ${avgDays}d` 
     },
     { 
       label: 'Finalizado', 

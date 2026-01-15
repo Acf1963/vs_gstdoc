@@ -37,6 +37,7 @@ const App: React.FC = () => {
 
   const [showEntityModal, setShowEntityModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'home' | 'requests' | 'reports'>('home');
+  const excelRef = React.useRef<HTMLInputElement>(null);
 
   // Persistência
   useEffect(() => {
@@ -111,12 +112,32 @@ const App: React.FC = () => {
               <div className="mt-12 glass-card p-8 rounded-3xl shadow-2xl border-t-8 border-navy overflow-hidden">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
                   <h2 className="text-2xl font-black text-navy uppercase tracking-tighter">Fluxo Documental Recente</h2>
-                  <button 
-                    onClick={() => setActiveTab('requests')}
-                    className="bg-moss hover:bg-moss/90 text-white px-8 py-3 rounded-xl font-black text-xs uppercase transition-all flex items-center gap-2 shadow-lg transform hover:scale-105"
-                  >
-                    <i className="fas fa-plus"></i> Nova Solicitação
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <input 
+                      type="file" 
+                      ref={excelRef} 
+                      className="hidden" 
+                      accept=".xlsx, .xls, .csv"
+                      title="Importar arquivo Excel"
+                      aria-label="Importar arquivo Excel"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) alert(`Iniciando mapeamento do arquivo: ${file.name}`);
+                      }}
+                    />
+                    <button 
+                      onClick={() => excelRef.current?.click()}
+                      className="bg-navy hover:bg-navy/90 text-white px-6 py-3 rounded-xl font-black text-xs uppercase transition-all flex items-center gap-2 shadow-lg transform hover:scale-105 border border-white/10"
+                    >
+                      <i className="fas fa-file-import"></i> Mapear & Importar
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('requests')}
+                      className="bg-moss hover:bg-moss/90 text-white px-6 py-3 rounded-xl font-black text-xs uppercase transition-all flex items-center gap-2 shadow-lg transform hover:scale-105"
+                    >
+                      <i className="fas fa-plus"></i> Nova Solicitação
+                    </button>
+                  </div>
                 </div>
                 <RequestTable 
                   requests={requests} 
@@ -288,6 +309,7 @@ const RequestForm: React.FC<{ onSubmit: (req: any) => void; entities: Entity[] }
   const operators = entities.filter(e => e.type === 'operadores');
   const boxes = entities.filter(e => e.type === 'caixas');
   const locations = entities.filter(e => e.type === 'localizacoes');
+  const treatments = entities.filter(e => e.type === 'tratamentos');
   
   const filteredSolicitants = React.useMemo(() => {
     const selectedSectorEntity = sectors.find(s => s.name === formData.sector);
@@ -373,9 +395,16 @@ const RequestForm: React.FC<{ onSubmit: (req: any) => void; entities: Entity[] }
           title="Selecionar tipo de tratamento"
           aria-label="Tipo de tratamento"
         >
-          {['Preparação Z1', 'Preparação Z2', 'Consulta Z1', 'Consulta Z2', 'Digitalização', 'Indexação', 'Expurgo'].map(t => (
-            <option key={t} value={t}>{t}</option>
+          <option value="">Selecione o Tratamento</option>
+          {treatments.map(t => (
+            <option key={t.id} value={t.name}>{t.name}</option>
           ))}
+          {/* Fallback caso não existam cadastros */}
+          {treatments.length === 0 && (
+            ['Preparação Z1', 'Preparação Z2', 'Consulta Z1', 'Consulta Z2', 'Digitalização', 'Indexação', 'Expurgo'].map(t => (
+              <option key={t} value={t}>{t}</option>
+            ))
+          )}
         </select>
       </div>
       <div className="space-y-2">
