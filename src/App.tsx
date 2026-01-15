@@ -71,6 +71,7 @@ const App: React.FC = () => {
       id: `req_${Date.now()}`,
       dataAtual: now.toISOString().split('T')[0],
       dias: diffDays,
+      estado: newReq.localizacaoOrigem === newReq.localizacaoAtual ? RequestStatus.FINISHED : RequestStatus.IN_PROGRESS
     };
     
     setRequests(prev => [record, ...prev]);
@@ -300,8 +301,7 @@ const RequestForm: React.FC<{ onSubmit: (req: any) => void; entities: Entity[] }
     solicitante: '',
     tratamento: 'Preparação Z1',
     operador: '',
-    dataInicio: new Date().toISOString().split('T')[0],
-    estado: RequestStatus.IN_PROGRESS
+    dataInicio: new Date().toISOString().split('T')[0]
   });
 
   const sectors = entities.filter(e => e.type === 'sectores');

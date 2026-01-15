@@ -64,18 +64,13 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, onDelete, onStatu
               <td className="p-4 text-xs">{req.dataInicio}</td>
               <td className="p-4 font-black text-moss">{req.dias}d</td>
               <td className="p-4">
-                <select 
-                  value={req.estado}
-                  onChange={(e) => onStatusUpdate(req.id, e.target.value as RequestStatus)}
-                  className={`text-[10px] font-bold px-2 py-1 rounded-full outline-none cursor-pointer border-none shadow-sm ${
-                    req.estado === RequestStatus.FINISHED 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-moss/20 text-moss-800'
-                  }`}
-                >
-                  <option value={RequestStatus.IN_PROGRESS}>Em Curso</option>
-                  <option value={RequestStatus.FINISHED}>Finalizado</option>
-                </select>
+                <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider ${
+                  req.estado === RequestStatus.FINISHED 
+                    ? 'bg-green-100 text-green-700 border border-green-200' 
+                    : 'bg-amber-100 text-amber-700 border border-amber-200'
+                }`}>
+                  {req.estado}
+                </span>
               </td>
               <td className="p-4">
                 <div className="flex items-center gap-2">

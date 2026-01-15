@@ -60,6 +60,7 @@ const EntityModal: React.FC<EntityModalProps> = ({ onClose, entities, setEntitie
     { value: 'solicitantes', label: 'Solicitantes', icon: 'fa-id-badge' },
     { value: 'tratamentos', label: 'Tratamento', icon: 'fa-hand-sparkles' },
     { value: 'operadores', label: 'Operadores', icon: 'fa-user-cog' },
+    { value: 'armazens', label: 'Armazéns', icon: 'fa-warehouse' },
     { value: 'usuarios', label: 'Usuários', icon: 'fa-user-lock' },
     { value: 'sistema', label: 'Sistema', icon: 'fa-desktop', color: 'text-red-500' },
   ];
