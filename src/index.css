@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* =================================
    GESTDOC - External Styles
    ================================= */
@@ -10,9 +14,7 @@
 body {
   background-color: #57616b;
   font-family: "Inter", sans-serif;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+  min-height: 100vh; /* Replaces margin/padding 0 handled by preflight usually, but okay to keep */
 }
 
 #root {
