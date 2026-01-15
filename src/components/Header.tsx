@@ -57,9 +57,14 @@ const Header: React.FC<HeaderProps> = ({ onEntityClick, onNavChange, onImport, o
           </div>
         </nav>
 
-        <button className="lg:hidden text-2xl" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
+        <button
+          className="lg:hidden text-2xl"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label={isMobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+        >
+  <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
+
       </div>
 
       {isMobileMenuOpen && (
