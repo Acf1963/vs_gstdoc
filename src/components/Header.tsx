@@ -28,13 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="bg-navy text-white sticky top-0 z-50 shadow-xl border-b border-white/10">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-
-        {/* Logo */}
-        <div
-          className="flex items-center gap-3 cursor-pointer"
-          onClick={() => onNavChange('home')}
-          role="link"
-        >
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavChange('home')}>
           <div className="bg-moss p-2 rounded-lg shadow-inner">
             <i className="fas fa-file-invoice text-2xl text-white" aria-hidden="true"></i>
           </div>
@@ -60,10 +54,7 @@ const Header: React.FC<HeaderProps> = ({
               {item.label}
             </button>
           ))}
-
-          {/* Import Button */}
-          <ImportButton label="Importar Excel" onImport={onImport} />
-
+          
           <div className="h-6 w-px bg-white/20 mx-2"></div>
 
           <div className="flex items-center gap-4">
@@ -73,27 +64,14 @@ const Header: React.FC<HeaderProps> = ({
               </div>
               <div className="text-[9px] text-moss font-bold uppercase">Online</div>
             </div>
-
-            <button
-              type="button"
-              onClick={onLogout}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center transition-all"
-              aria-label="Terminar sessão"
-              title="Terminar sessão"
-            >
-              <i className="fas fa-sign-out-alt" aria-hidden="true"></i>
+            <button onClick={onLogout} className="w-10 h-10 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center transition-all group" title="Sair">
+                <i className="fas fa-sign-out-alt"></i>
             </button>
           </div>
         </nav>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          type="button"
-          className="lg:hidden text-2xl"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-        >
-          <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`} aria-hidden="true"></i>
+        <button className="lg:hidden text-2xl" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
       </div>
 
@@ -104,11 +82,7 @@ const Header: React.FC<HeaderProps> = ({
           {menuItems.map((item) => (
             <button
               key={item.label}
-              type="button"
-              onClick={() => {
-                item.action();
-                setIsMobileMenuOpen(false);
-              }}
+              onClick={() => { item.action(); setIsMobileMenuOpen(false); }}
               className="w-full text-left p-4 hover:bg-white/5 rounded-xl flex items-center gap-4 text-lg font-bold"
               aria-label={item.label}
             >
@@ -116,19 +90,8 @@ const Header: React.FC<HeaderProps> = ({
               {item.label}
             </button>
           ))}
-
-          {/* Import Button in Mobile */}
-          <ImportButton label="Importar Excel" onImport={onImport} />
-
-          <button
-            type="button"
-            onClick={onLogout}
-            className="w-full bg-red-600 text-white p-4 rounded-xl flex items-center justify-center gap-2 font-bold uppercase"
-            aria-label="Sair do sistema"
-            title="Sair do sistema"
-          >
-            <i className="fas fa-sign-out-alt" aria-hidden="true"></i>
-            Sair do Sistema
+          <button onClick={onLogout} className="w-full bg-red-600 text-white p-4 rounded-xl flex items-center justify-center gap-2 font-bold uppercase">
+            <i className="fas fa-sign-out-alt"></i> Sair do Sistema
           </button>
         </div>
       )}
