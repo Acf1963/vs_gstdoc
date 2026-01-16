@@ -11,9 +11,7 @@ const ASSETS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap'
 ];
 
-// ===============================
-// INSTALAÇÃO – Cache inicial
-// ===============================
+// Instalação: cache inicial
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -24,9 +22,7 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
-// ===============================
-// ATIVAÇÃO – Limpa caches antigos
-// ===============================
+// Ativação: limpa caches antigos
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -43,32 +39,50 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// ===============================
-// FETCH – Stale‑While‑Revalidate
-// ===============================
+// Intercepta apenas GET locais
 self.addEventListener("fetch", (event) => {
   const request = event.request;
 
-  // Ignora POST, PUT, DELETE e chamadas da API
+  // Ignora métodos não-GET
   if (request.method !== "GET") return;
 
-  // Ignora chamadas externas (CDNs, APIs, Google Fonts, etc.)
+  // Ignora chamadas externas
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const fetchPromise = fetch(request)
-        .then((networkResponse) => {
-          // Atualiza cache apenas para ficheiros locais
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, networkResponse.clone());
+    caches.match(request).then((cachedResponse) => {
+      if (cachedResponse) {
+        // Serve do cache e atualiza em background
+        fetch(request)
+          .then((networkResponse) => {
+            if (networkResponse && networkResponse.ok) {
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(request, networkResponse.clone());
+              });
+            }
+          })
+          .catch(() => {
+            // Falha silenciosa
           });
+
+        return cachedResponse;
+      }
+
+      // Se não houver cache, tenta rede e armazena
+      return fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.ok) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
           return networkResponse;
         })
-        .catch(() => cached);
-
-      return cached || fetchPromise;
+        .catch(() => {
+          // Offline sem cache — opcional: retornar página offline
+        });
     })
   );
 });
