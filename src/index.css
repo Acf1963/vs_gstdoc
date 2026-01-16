@@ -2,6 +2,8 @@
    GESTDOC - External Imports
    ================================= */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap");
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 /* =================================
    Tailwind Directives
