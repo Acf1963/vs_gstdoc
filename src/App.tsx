@@ -35,43 +35,67 @@ function App() {
       {/* -------------------------------------------------------
          MENU SUPERIOR
       ------------------------------------------------------- */}
-      <header className="w-full bg-navy text-white py-4 shadow-lg">
-        <nav className="max-w-6xl mx-auto flex items-center justify-center gap-6 text-sm font-bold uppercase tracking-wide">
+      <header className="w-full bg-navy text-white shadow-xl border-b border-white/10">
+  <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-          <button onClick={() => openModalFor("caixas")} className="hover:text-moss transition">
-            Caixas
-          </button>
+    {/* LOGO */}
+    <div className="flex items-center gap-3">
+      <i className="fas fa-archive text-moss text-2xl"></i>
+      <span className="text-xl font-black tracking-tight uppercase">
+        Gestdoc
+      </span>
+    </div>
 
-          <button onClick={() => openModalFor("clientes")} className="hover:text-moss transition">
-            Clientes
-          </button>
+    {/* MENU SUPERIOR */}
+    <nav className="flex items-center gap-8 text-sm font-bold uppercase tracking-wide">
 
-          <button onClick={() => openModalFor("sectores")} className="hover:text-moss transition">
-            Sectores
-          </button>
+      <button className="hover:text-moss transition">
+        Início
+      </button>
 
-          <button onClick={() => openModalFor("solicitantes")} className="hover:text-moss transition">
-            Solicitantes
-          </button>
+      <button className="hover:text-moss transition">
+        Solicitação
+      </button>
 
-          <button onClick={() => openModalFor("operadores")} className="hover:text-moss transition">
-            Operadores
-          </button>
+      <button className="hover:text-moss transition">
+        Relatórios
+      </button>
 
-          <button onClick={() => openModalFor("armazens")} className="hover:text-moss transition">
-            Armazéns
-          </button>
+      {/* DROPDOWN DE CADASTROS */}
+      <div className="relative group">
+        <button className="hover:text-moss transition flex items-center gap-2">
+          Cadastros
+          <i className="fas fa-chevron-down text-xs"></i>
+        </button>
 
-          <button onClick={() => openModalFor("usuarios")} className="hover:text-moss transition">
-            Usuários
-          </button>
+        {/* MENU DROPDOWN */}
+        <div className="absolute hidden group-hover:block bg-white text-navy shadow-xl rounded-xl border border-moss/30 mt-3 w-48 z-50">
 
-          <button onClick={() => openModalFor("tratamentos")} className="hover:text-moss transition">
-            Tratamentos
-          </button>
+          {[
+            ["caixas", "Caixas"],
+            ["clientes", "Clientes"],
+            ["sectores", "Sectores"],
+            ["solicitantes", "Solicitantes"],
+            ["operadores", "Operadores"],
+            ["armazens", "Armazéns"],
+            ["usuarios", "Usuários"],
+            ["tratamentos", "Tratamentos"],
+          ].map(([type, label]) => (
+            <button
+              key={type}
+              onClick={() => openModalFor(type as EntityType)}
+              className="w-full text-left px-4 py-3 hover:bg-moss/10 transition"
+            >
+              {label}
+            </button>
+          ))}
 
-        </nav>
-      </header>
+        </div>
+      </div>
+
+    </nav>
+  </div>
+</header>
 
       {/* -------------------------------------------------------
          MODAL DE ENTIDADES
