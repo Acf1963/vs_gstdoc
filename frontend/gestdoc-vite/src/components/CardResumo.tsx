@@ -1,18 +1,14 @@
-type Props = {
+interface CardResumoProps {
   titulo: string;
-  valor: number;
-  icone?: React.ReactNode;
+  valor: number | string;
   cor?: string;
-};
+}
 
-const CardResumo = ({ titulo, valor, icone, cor = "bg-blue-900" }: Props) => (
-  <div className={`p-4 rounded shadow text-white ${cor} flex items-center justify-between`}>
-    <div>
-      <h3 className="text-sm">{titulo}</h3>
-      <p className="text-2xl font-bold">{valor}</p>
+export function CardResumo({ titulo, valor, cor = "bg-gray-200" }: CardResumoProps) {
+  return (
+    <div className={`rounded-lg shadow-md p-4 text-white ${cor}`}>
+      <h3 className="text-sm font-semibold opacity-90">{titulo}</h3>
+      <p className="text-3xl font-bold mt-1">{valor}</p>
     </div>
-    {icone && <div className="text-3xl">{icone}</div>}
-  </div>
-);
-
-export default CardResumo;
+  );
+}
