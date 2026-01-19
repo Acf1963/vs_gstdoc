@@ -18,7 +18,9 @@
       "@modules/*": ["src/modules/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@utilizador/*": ["src/utilizador/*"]
-    }
+    },
+
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }
