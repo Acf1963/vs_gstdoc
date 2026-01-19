@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router";
+import { router } from "../src/router";
 
 import Header from "./components/Header";
 import EntityModal from "./components/EntityModal";
