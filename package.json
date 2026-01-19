@@ -17,6 +17,8 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "@prisma/client": "^5.19.1",
+    "prisma": "^5.19.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.12.0",

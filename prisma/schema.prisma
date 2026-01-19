@@ -1,0 +1,126 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TipoSolicitacao {
+  REQUISICAO
+  DEVOLUCAO
+  CONSULTA
+}
+
+enum Prioridade {
+  BAIXA
+  MEDIA
+  ALTA
+  URGENTE
+}
+
+enum EstadoSolicitacao {
+  PENDENTE
+  EM_ANALISE
+  EM_PROCESSAMENTO
+  CONCLUIDA
+  CANCELADA
+}
+
+model Utilizador {
+  id       String @id @default(uuid())
+  nome     String
+  email    String @unique
+  password String
+  role     String
+
+  solicitacoesCriadas     Solicitacao[] @relation("SolicitanteSolicitacoes")
+  solicitacoesResponsavel Solicitacao[] @relation("ResponsavelSolicitacoes")
+
+  criadoEm     DateTime       @default(now())
+  atualizadoEm DateTime       @updatedAt
+  LinhaDoTempo LinhaDoTempo[]
+}
+
+model Solicitacao {
+  id           String            @id @default(uuid())
+  codigo       String            @unique
+  tipo         TipoSolicitacao
+  descricao    String
+  prioridade   Prioridade
+  estadoAtual  EstadoSolicitacao
+  criadoEm     DateTime          @default(now())
+  atualizadoEm DateTime          @updatedAt
+  concluidoEm  DateTime?
+
+  solicitanteId String
+  solicitante   Utilizador @relation("SolicitanteSolicitacoes", fields: [solicitanteId], references: [id])
+
+  responsavelId String?
+  responsavel   Utilizador? @relation("ResponsavelSolicitacoes", fields: [responsavelId], references: [id])
+
+  documentos   SolicitacaoDocumento[]
+  linhaDoTempo LinhaDoTempo[]
+  anexos       Anexo[]
+  entrega      Entrega?
+}
+
+model Documento {
+  id           String   @id @default(uuid())
+  codigo       String   @unique
+  titulo       String
+  descricao    String?
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  solicitacoes SolicitacaoDocumento[]
+  Anexo        Anexo[]
+}
+
+model SolicitacaoDocumento {
+  id            String   @id @default(uuid())
+  solicitacaoId String
+  documentoId   String
+  observacao    String?
+  criadoEm      DateTime @default(now())
+
+  solicitacao Solicitacao @relation(fields: [solicitacaoId], references: [id])
+  documento   Documento   @relation(fields: [documentoId], references: [id])
+
+  @@unique([solicitacaoId, documentoId])
+}
+
+model LinhaDoTempo {
+  id            String            @id @default(uuid())
+  solicitacaoId String
+  estado        EstadoSolicitacao
+  descricao     String
+  criadoEm      DateTime          @default(now())
+
+  solicitacao   Solicitacao @relation(fields: [solicitacaoId], references: [id])
+  responsavelId String?
+  responsavel   Utilizador? @relation(fields: [responsavelId], references: [id])
+}
+
+model Anexo {
+  id            String   @id @default(uuid())
+  solicitacaoId String?
+  documentoId   String?
+  nome          String
+  caminho       String
+  criadoEm      DateTime @default(now())
+
+  solicitacao Solicitacao? @relation(fields: [solicitacaoId], references: [id])
+  documento   Documento?   @relation(fields: [documentoId], references: [id])
+}
+
+model Entrega {
+  id            String   @id @default(uuid())
+  solicitacaoId String   @unique
+  dataEntrega   DateTime @default(now())
+  recebidoPor   String
+  observacao    String?
+
+  solicitacao Solicitacao @relation(fields: [solicitacaoId], references: [id])
+}
