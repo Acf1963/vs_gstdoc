@@ -4,7 +4,11 @@ interface CardResumoProps {
   cor?: string;
 }
 
-export function CardResumo({ titulo, valor, cor = "bg-gray-200" }: CardResumoProps) {
+export function CardResumo({
+  titulo,
+  valor,
+  cor = "bg-gray-200",
+}: CardResumoProps) {
   return (
     <div className={`rounded-lg shadow-md p-4 text-white ${cor}`}>
       <h3 className="text-sm font-semibold opacity-90">{titulo}</h3>
