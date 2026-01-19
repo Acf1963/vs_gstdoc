@@ -1,4 +1,14 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "vite.config.ts",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
@@ -7,14 +17,15 @@
   ],
   "headers": [
     {
-      "source": "/service-worker.js",
-      "headers": [
-      ]
-    },
-    {
       "source": "/manifest.json",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/service-worker.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" }
       ]
     }
   ]
