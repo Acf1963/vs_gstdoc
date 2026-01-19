@@ -24,16 +24,8 @@ export default defineConfig({
         orientation: "portrait",
         start_url: "./",
         icons: [
-          {
-            src: "icons/icon-192.png",
-            sizes: "192x192",
-            type: "image/png"
-          },
-          {
-            src: "icons/icon-512.png",
-            sizes: "512x512",
-            type: "image/png"
-          },
+          { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
+          { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },
           {
             src: "icons/icon-512-maskable.png",
             sizes: "512x512",
@@ -49,25 +41,19 @@ export default defineConfig({
             urlPattern: ({ request }: { request: Request }) =>
               request.destination === "document",
             handler: "NetworkFirst",
-            options: {
-              cacheName: "html-cache"
-            }
+            options: { cacheName: "html-cache" }
           },
           {
             urlPattern: ({ request }: { request: Request }) =>
               ["script", "style"].includes(request.destination),
             handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "asset-cache"
-            }
+            options: { cacheName: "asset-cache" }
           },
           {
             urlPattern: ({ request }: { request: Request }) =>
               ["image", "font"].includes(request.destination),
             handler: "CacheFirst",
-            options: {
-              cacheName: "static-cache"
-            }
+            options: { cacheName: "static-cache" }
           }
         ]
       }
@@ -78,7 +64,13 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src")
+      "@": path.resolve(__dirname, "src"),
+      "@components": path.resolve(__dirname, "src/components"),
+      "@pages": path.resolve(__dirname, "src/pages"),
+      "@layout": path.resolve(__dirname, "src/layout"),
+      "@services": path.resolve(__dirname, "src/services"),
+      "@context": path.resolve(__dirname, "src/context"),
+      "@utils": path.resolve(__dirname, "src/utils")
     }
   },
 
