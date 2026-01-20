@@ -28,7 +28,7 @@
       "@utils/*": ["src/utils/*"]
     },
 
-    "types": ["node"],
+    "types": ["vite/client", "node"],
     "ignoreDeprecations": "6.0"
   },
 
