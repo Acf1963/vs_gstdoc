@@ -1,6 +1,7 @@
 {
   "name": "gestdoc-vite",
   "version": "1.0.0",
+  "type": "module",
   "description": "Sistema institucional de gestão documental",
   "author": "Instituição Pública de Angola",
   "license": "MIT",
@@ -29,7 +30,7 @@
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.23",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",

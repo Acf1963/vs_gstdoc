@@ -83,7 +83,6 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
-    minify: "esbuild",
     chunkSizeWarningLimit: 900,
     cssCodeSplit: true,
     rollupOptions: {
